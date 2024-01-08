@@ -43,8 +43,6 @@ The `AuthController` class in the `com.iche.xpresspayapi.controller` package pro
   "data": "activate"
   }
 
-
-
 ### Registration API:
 
 **Endpoint:** `POST /api/v1/xpress-pay-api/auth/registration`
@@ -77,17 +75,12 @@ Endpoint: POST /api/v1/xpress-pay-api/auth/login
 Description: Used for user authentication.
 
 Request Body:
-
-json
-Copy code
 {
   "email": "chukwu.iche@gmail.com",
   "password": "1234"
 }
-Response:
 
-json
-Copy code
+Response:
 {
   "message": "Processed successfully",
   "time": "2024-01-08 11:37:53 PM",
@@ -107,18 +100,12 @@ Endpoint: POST /api/v1/vtu/airtime/purchase
 Description: Used to purchase airtime.
 
 Request Body:
-
-json
-Copy code
 {
   "phone_number": "08033333333",
   "amount": 5000,
   "network_provider": "MTN"
 }
 Response:
-
-json
-Copy code
 {
   "message": "Processed successfully",
   "time": "2024-01-08 11:39:09 PM",
@@ -131,9 +118,7 @@ Copy code
 External Configurations
 The application utilizes external configuration properties from the application.yml file. Key configurations include biller API keys, JWT settings, database connection details, server port, and email properties.
 
-yaml
-Copy code
-# Example application.yml configurations
+# application.yml configurations
 biller:
   api:
     private:
