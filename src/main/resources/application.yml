@@ -1,0 +1,46 @@
+biller:
+  api:
+    private:
+      key: hrYZT8t4ih8oVmPrtjDZCB4aUP5UGDTT_CVASPRV
+    public:
+      key: keD5z52EpvurSzPu9tJrJ2VMZMauzpK9_CVASPUB
+jwt:
+  expiration:
+    access-token: 86400000
+    refresh-token: 259200000
+  secret-key: "0S07aPkGwOoB1GLEtYPIHaeyQ8VLkKisUMPrKtPt6KQ3NXB6giH2AiXotG5oRDzO4XpjGaXcw6TomIYUbxVkew=="
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/xpress_pay_db
+    username: postgres
+    password: root
+
+
+  jpa:
+    database: postgresql
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8011
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jazzmaniche@gmail.com
+    password: mszwhgpdrpjhoykj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+#logging:
+#  level:
+#    root: debug
