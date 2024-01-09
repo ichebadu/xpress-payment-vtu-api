@@ -3,6 +3,7 @@ package com.iche.xpresspayapi.exceptions;
 
 
 import com.iche.xpresspayapi.dto.response.APIResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,5 +63,15 @@ public class ExceptionHandlers {
                 .build();
         APIResponse<ExceptionResponse> apiResponse = new APIResponse<>(exceptionResponse);
         return new ResponseEntity<>(apiResponse,HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(InputNotValidException.class)
+    public ResponseEntity<APIResponse<ExceptionResponse>> requestNotValidException(InputNotValidException e, HttpServletRequest request){
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(e.getMessage())
+                .localDateTime(LocalDateTime.now())
+                .build();
+        APIResponse<ExceptionResponse> apiResponse = new APIResponse<>(exceptionResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.UNAUTHORIZED);
     }
 }

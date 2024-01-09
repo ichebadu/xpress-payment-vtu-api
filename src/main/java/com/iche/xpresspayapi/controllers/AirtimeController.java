@@ -4,6 +4,7 @@ import com.iche.xpresspayapi.dto.request.userRequest.UserPurchaseAirtimeVTUReque
 import com.iche.xpresspayapi.dto.response.APIResponse;
 import com.iche.xpresspayapi.dto.response.userRequest.PurchaseAirtimeResponse;
 import com.iche.xpresspayapi.service.airtimeService.AirtimeVTUService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class AirtimeController {
     private final AirtimeVTUService airtimeVtuService;
 
     @PostMapping("/purchase")
-    public ResponseEntity<APIResponse<PurchaseAirtimeResponse>> purchaseAirtime(@RequestBody UserPurchaseAirtimeVTURequest userPurchaseAirtimeVTURequest){
+    public ResponseEntity<APIResponse<PurchaseAirtimeResponse>> purchaseAirtime(@RequestBody @Valid UserPurchaseAirtimeVTURequest userPurchaseAirtimeVTURequest){
         return new ResponseEntity<>(airtimeVtuService.purchaseVTUAirtime(userPurchaseAirtimeVTURequest), HttpStatus.OK);
     }
 }

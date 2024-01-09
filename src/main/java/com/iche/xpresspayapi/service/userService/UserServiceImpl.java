@@ -1,6 +1,7 @@
 package com.iche.xpresspayapi.service.userService;
 
 import com.iche.xpresspayapi.dto.request.userRequest.LoginRequest;
+import com.iche.xpresspayapi.dto.request.userRequest.OtpVerificationRequest;
 import com.iche.xpresspayapi.dto.request.userRequest.RegistrationRequest;
 import com.iche.xpresspayapi.dto.response.APIResponse;
 import com.iche.xpresspayapi.dto.response.userRequest.LoginResponse;
@@ -13,6 +14,7 @@ import com.iche.xpresspayapi.notificationEvent.registrationEvent.UserRegistratio
 import com.iche.xpresspayapi.repository.UserRepository;
 import com.iche.xpresspayapi.service.securityService.JwtService;
 import com.iche.xpresspayapi.service.tokenService.TokenServiceImpl;
+import com.iche.xpresspayapi.utils.Validations;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -32,9 +34,12 @@ public class UserServiceImpl implements UserService {
     private final TokenServiceImpl tokenServiceImpl;
     private final ApplicationEventPublisher publisher;
     private final JwtService jwtService;
+    private final Validations<RegistrationRequest> registrationRequestValidationUtils;
+    private final Validations<LoginRequest> loginRequestValidations;
 
     @Override
     public APIResponse<RegistrationResponse> registerUser(RegistrationRequest registrationRequest) {
+        registrationRequestValidationUtils.validate(registrationRequest);
         validateUserExistence(registrationRequest.getEmail());
         System.out.println(registrationRequest.getPassword());
    //     String formattedPhoneNumber = savePhoneNumber(registrationRequest.getPhoneNumber());
@@ -75,6 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public APIResponse<LoginResponse> login(LoginRequest loginRequest) {
+        loginRequestValidations.validate(loginRequest);
         Users user = getUserByEmail(loginRequest.getEmail());
         if(user.getStatus().equals(false)){
             throw new UserDisabledException("Password do not match");

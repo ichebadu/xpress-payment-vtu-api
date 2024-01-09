@@ -2,9 +2,9 @@ package com.iche.xpresspayapi.dto.request.userRequest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,15 +19,17 @@ public class RegistrationRequest {
     @JsonProperty("last_name")
     @NotBlank(message = "last name cannot be empty")
     private String lastName;
-    @NotBlank(message = "Email address must not be empty")
+    @NotBlank(message = "Enter your email")
+    @Column(name = "email", nullable = false)
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Invalid email format")
     private String email;
     @NotBlank(message = "Email address must not be empty")
+    @Column(name = "phone_number", nullable = false)
+    @Pattern(regexp = "^[^?*!\\\\/$%^()~<>?\":}{\\[\\]|+=_\\-&#@.,;]+$", message = "Invalid phone number format")
     private String phoneNumber;
-    @NotBlank
-    @Pattern(
-            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
-            message = "password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-    )
-    @Size(min = 8, message = "password must be at least 8 characters long")
+    @NotBlank(message = "Enter your password")
+    @Column(name = "password", nullable = false)
+    @Pattern(regexp = "^[^?*!\\\\/$%^()~<>?\":}{\\[\\]|+=_\\-&#@.,;]+$", message = "Invalid password format")
     private String password;
+
 }

@@ -50,9 +50,9 @@ public class AuthController {
     )
     @ApiResponse(responseCode = "200", description = "Http status 200 SUCCESS")
     public ResponseEntity<APIResponse<String>> verifyUser(
-            @RequestBody OtpVerificationRequest request
+            @RequestBody @Valid OtpVerificationRequest otpVerificationRequest
     ){
-        return new ResponseEntity<>(tokenService.verifyUserOtp(request.getEmail(),request.getOtp()),HttpStatus.OK);
+        return new ResponseEntity<>(tokenService.verifyUserOtp(otpVerificationRequest),HttpStatus.OK);
     }
     @PostMapping(LOGIN)
     @Operation(

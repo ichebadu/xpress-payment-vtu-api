@@ -1,6 +1,7 @@
 package com.iche.xpresspayapi.service.tokenService;
 
 
+import com.iche.xpresspayapi.dto.request.userRequest.OtpVerificationRequest;
 import com.iche.xpresspayapi.dto.response.APIResponse;
 import com.iche.xpresspayapi.exceptions.InvalidCredentialsException;
 import com.iche.xpresspayapi.exceptions.OtpException;
@@ -12,6 +13,7 @@ import com.iche.xpresspayapi.repository.TokenRepository;
 import com.iche.xpresspayapi.repository.UserRepository;
 import com.iche.xpresspayapi.utils.RandomGeneratedValue;
 import com.iche.xpresspayapi.utils.UserVerification;
+import com.iche.xpresspayapi.utils.Validations;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,12 +30,15 @@ public class TokenServiceImpl implements TokenService{
     private final UserVerification userVerification;
     private final UserRepository userRepository;
 
+    private final Validations<OtpVerificationRequest> otpVerificationRequestValidations;
+
     @Override
-    public APIResponse<String> verifyUserOtp(String email, String otp) {
-        Users user = userVerification.verifyUserByEmail(email);
+    public APIResponse<String> verifyUserOtp(OtpVerificationRequest otpVerificationRequest) {
+        otpVerificationRequestValidations.validate(otpVerificationRequest);
+        Users user = userVerification.verifyUserByEmail(otpVerificationRequest.getEmail());
 
         log.info("Verifying OTP: " + user.getEmail());
-        Token confirmationTokenConfirmation = confirmationTokenRepository.findByUser_EmailAndOtp(user.getEmail(), otp);
+        Token confirmationTokenConfirmation = confirmationTokenRepository.findByUser_EmailAndOtp(user.getEmail(), otpVerificationRequest.getOtp());
         System.out.println(confirmationTokenConfirmation);
 
         if (confirmationTokenConfirmation == null && isOtpExpired(confirmationTokenConfirmation)) {
