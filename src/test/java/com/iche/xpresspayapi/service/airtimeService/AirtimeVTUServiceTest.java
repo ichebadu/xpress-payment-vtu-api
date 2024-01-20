@@ -9,16 +9,12 @@ import com.iche.xpresspayapi.dto.response.APIResponse;
 import com.iche.xpresspayapi.dto.response.airtime.AirtimeVTUResponseAPI;
 import com.iche.xpresspayapi.dto.response.userRequest.PurchaseAirtimeResponse;
 
-import com.iche.xpresspayapi.enums.Role;
-import com.iche.xpresspayapi.exceptions.BillersRequestException;
 import com.iche.xpresspayapi.model.NetworkProvider;
 import com.iche.xpresspayapi.model.Users;
 import com.iche.xpresspayapi.repository.AirtimeVTUTransactionRepository;
 import com.iche.xpresspayapi.repository.NetworkProviderRepository;
-import com.iche.xpresspayapi.service.airtimeService.AirtimeVTUService;
 import com.iche.xpresspayapi.service.userService.UserService;
 import com.iche.xpresspayapi.utils.BillerTransactionIdGenerator;
-import com.iche.xpresspayapi.utils.EndpointUtils;
 import com.iche.xpresspayapi.utils.ResponseCode;
 import com.iche.xpresspayapi.utils.UserVerification;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,9 +23,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -47,7 +40,6 @@ class AirtimeVTUServiceTest {
 
     @Mock
     private AirtimeVTUTransactionRepository airtimeVtuTransactionRepository;
-
 
     @Mock
     private UserService userService;
@@ -70,7 +62,6 @@ class AirtimeVTUServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Set up a mock SecurityContext with a mock Authentication object
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         String email = "chukwu.iche@gmail.com";
@@ -87,7 +78,6 @@ class AirtimeVTUServiceTest {
 
     @Test
     void purchaseVTUAirtime_WithValidRequest_ShouldReturnSuccessfulResponse() {
-        // Arrange
         UserPurchaseAirtimeVTURequest request = new UserPurchaseAirtimeVTURequest("12345678901", BigDecimal.TEN, "SomeProvider");
 
         Users user = Users.builder().status(true).build();
@@ -103,23 +93,17 @@ class AirtimeVTUServiceTest {
         when(vtuAirtimeRequestHandler.sendNetworkPostRequest(
                 any(), any(), eq(AirtimeVTUResponseAPI.class), any())).thenReturn(createMockResponse());
 
-        // Act
         APIResponse<PurchaseAirtimeResponse> response = airtimeVTUService.purchaseVTUAirtime(request);
 
-        // Assert
         assertNotNull(response);
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         PurchaseAirtimeResponse responseData = response.getData();
         assertNotNull(responseData);
-//        assertEquals(ResponseCode.BILLER_SUCCESS_CODE, response.getResponseCode());
+
         assertEquals("12345678901", responseData.getPhoneNumber());
         assertEquals("SUCCESSFUL", responseData.getTransactionStatus());
 
-        // Verify that the repository save method is called
         verify(airtimeVtuTransactionRepository, times(1)).save(any());
-
-        // You may add more assertions based on your actual implementation
     }
 
     private AirtimeVTUPurchaseRequestAPI createMockRequest(UserPurchaseAirtimeVTURequest request) {

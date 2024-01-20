@@ -28,7 +28,6 @@ public class Validations<T> {
             for (ConstraintViolation<T> violation : validations) {
                 errorMessagesSet.add(violation.getMessage());
             }
-
             try {
                 String jsonErrorMessage = objectMapper.writeValueAsString(errorMessagesSet);
                 throw new InputNotValidException(jsonErrorMessage);

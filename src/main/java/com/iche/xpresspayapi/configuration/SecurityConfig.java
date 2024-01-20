@@ -24,7 +24,7 @@ public class SecurityConfig {
     public static  final String[] WHITE_LIST_URLS = {
             "/api/v1/xpress-pay-api/auth/registration",
             "/api/v1/xpress-pay-api/auth/login",
-            "/api/v1/xpress-pay-api/auth/**",
+            "/api/v1/xpress-pay-api/auth/verification",
             "/v3/api-docs.yaml",
             "/v3/api-docs/**",
             "/swagger-ui/**",

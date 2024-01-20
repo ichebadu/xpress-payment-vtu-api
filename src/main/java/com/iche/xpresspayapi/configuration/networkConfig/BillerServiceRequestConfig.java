@@ -16,6 +16,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.iche.xpresspayapi.utils.BillerUtils.*;
+
 
 @Component
 @Slf4j
@@ -30,10 +32,10 @@ public class BillerServiceRequestConfig {
     public Map<String, String> billerRequestHeaderConfig(AirtimeVTUPurchaseRequestAPI airtimeVTUPurchaseRequestAPI){
         Map<String, String> headers = new HashMap<>();
         String jsonRequestFormatter = requestDeserializer(airtimeVTUPurchaseRequestAPI);
-        headers.put("PaymentHash", calculateHMAC512(jsonRequestFormatter));
-        headers.put("Authorization", "Bearer " + billerPublicKey);
-        headers.put("Channel", "API");
-        headers.put("Content-Type", "application/json");
+        headers.put(PAYMENT_HASH, calculateHMAC512(jsonRequestFormatter));
+        headers.put(AUTHORIZATION, BEARER + billerPublicKey);
+        headers.put(CHANNEL, API);
+        headers.put(CONTENT_TYPE, APPLICATION_JSON);
         return headers;
     }
 
@@ -45,18 +47,16 @@ public class BillerServiceRequestConfig {
             throw  new BillersRequestException("can not convert airtime request to json");
         }
     }
-
     private String calculateHMAC512(String payload){
-        String HMAC_SHA512 = "HmacSHA512";
+        String HMAC_SHA512 = HMAC_SHA_512;
         SecretKeySpec secretKeySpec = new SecretKeySpec(billerPrivateKey.getBytes(), HMAC_SHA512);
         Mac mac = null;
         try{
             mac = Mac.getInstance(HMAC_SHA512);
             mac.init(secretKeySpec);
             return Hex.encodeHexString(mac.doFinal(payload.getBytes()));
-        } catch (NoSuchAlgorithmException | InvalidKeyException e){
+        } catch (NoSuchAlgorithmException |InvalidKeyException e){
             throw new BillersRequestException("can not convert airtime request to json");
         }
     }
-
 }

@@ -76,6 +76,7 @@ public class AirtimeVTUService implements VTUAirtimeService{
                                 airtimeVTUTransaction.setTransactionStatus(VTUTransactionStatus.SUCCESSFUL);
                             } else {
                                 airtimeVTUTransaction.setTransactionStatus(VTUTransactionStatus.FAILED);
+
                             }
                             airtimeVtuTransactionRepository.save(airtimeVTUTransaction);
 

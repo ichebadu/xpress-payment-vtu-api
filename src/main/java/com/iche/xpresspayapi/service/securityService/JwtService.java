@@ -77,7 +77,6 @@ public class JwtService {
         Set<String> role = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
-
         extraClaims.put("role", role);
 
         return buildToken(extraClaims, userDetails, expiration);

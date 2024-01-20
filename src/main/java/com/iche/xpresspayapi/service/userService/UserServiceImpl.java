@@ -1,7 +1,6 @@
 package com.iche.xpresspayapi.service.userService;
 
 import com.iche.xpresspayapi.dto.request.userRequest.LoginRequest;
-import com.iche.xpresspayapi.dto.request.userRequest.OtpVerificationRequest;
 import com.iche.xpresspayapi.dto.request.userRequest.RegistrationRequest;
 import com.iche.xpresspayapi.dto.response.APIResponse;
 import com.iche.xpresspayapi.dto.response.userRequest.LoginResponse;
